@@ -64,13 +64,49 @@
                 </configuration>
                 <executions>
                     <execution>
-                        <phase>compile</phase>
+                        <phase>verify</phase>
                         <goals>
-                            <goal>jar</goal>
+                            <goal>jar-no-fork</goal>
                         </goals>
                     </execution>
                 </executions>
             </plugin>
+			<plugin>
+				<!--lombok还原插件-->
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok-maven-plugin</artifactId>
+                <version>1.18.4.0</version>
+				<configuration>
+					<encoding>UTF-8</encoding>
+					<sourceDirectory>src/main/java</sourceDirectory>
+				</configuration>
+				<executions>
+                    <execution>
+						<phase>verify</phase>
+						<goals>
+							<goal>delombok</goal>
+						</goals>
+                    </execution>
+                </executions>
+            </plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>3.0.1</version>
+                <configuration>
+                    <sourcepath>target/generated-sources/delombok</sourcepath>
+					<additionalJOption>-Xdoclint:none</additionalJOption>
+                </configuration>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
         </plugins>
     </build>
 </project>
